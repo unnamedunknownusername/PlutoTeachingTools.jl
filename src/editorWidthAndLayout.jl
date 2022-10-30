@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.19.13
+# v0.19.14
 
 using Markdown
 using InteractiveUtils
@@ -10,11 +10,25 @@ using HypertextLiteral
 # ╔═╡ 89469f3b-cb71-4143-a749-36ba8d39690b
 using PlutoUI
 
+# ╔═╡ 646aa9d2-4ea4-477c-8aea-079cc33ac95f
+using PlutoTeachingTools
+
 # ╔═╡ 2308c8f3-72eb-4987-9df1-1dca91a856e0
 TableOfContents(include_definitions=true)
 
-# ╔═╡ 646aa9d2-4ea4-477c-8aea-079cc33ac95f
+# ╔═╡ 3a88f522-2f5f-4a02-9f6f-de2b1d2c30c4
+md"""
+# Function to convert sting representation to html
+"""
 
+# ╔═╡ 6c1bd6a0-d61c-4e66-a60a-0ed8165e4043
+#=
+2022/10/30
+inspired by https://github.com/JuliaPluto/PlutoUI.jl/blob/main/src/Layout.jl css_to_string() function 
+=#
+function convertCssStringIntoHtmlStyleDiv(x)
+	htmlStyleDiv = @htl("<style>$(x)</style>")
+end
 
 # ╔═╡ c431beae-eab2-41c6-8b1f-be7d8bdff35a
 md"""
@@ -23,7 +37,7 @@ md"""
 
 # ╔═╡ b9e3f2c2-3c4e-41f5-aff4-80fa702c803a
 function layoutWidth(
-maxWidthinPercent,
+maxWidthInPercent,
 paddingLeftPercent,
 paddingRightPercent
 )
@@ -31,11 +45,11 @@ paddingRightPercent
 <style>
 
 body:not(.fake_class) main {
-max-width: $maxWidthinPercent% !important; 
-align-self: center !important; 
+max-width: $maxWidthInPercent% ;
+align-self: center 
 margin: 0 auto;
-padding-left: $(paddingLeftPercent)% !important; 
-padding-right: $paddingRightPercent% !important;
+padding-left: $(paddingLeftPercent)% ;
+padding-right: $paddingRightPercent% ;
 }
 
 </style>
@@ -79,29 +93,90 @@ layoutWider()=layoutWidth(90,10,10)
 # ╔═╡ 58f06c62-6173-48e0-8926-87f7fec77d63
 layoutWidest()=layoutWidth(90,5,0)
 
-# ╔═╡ cd54eb94-dcd1-4bb7-ba57-8e1cedb0c659
+# ╔═╡ a8079d57-bfb8-4a79-97d5-210d44367e51
 
+
+# ╔═╡ 2554f3c6-91a2-431b-ba0b-7b6939fd4da3
+
+
+# ╔═╡ 087d4927-095d-44ab-b6c3-29fdb9c71051
+md"""
+# Hide Live Docs
+"""
+
+# ╔═╡ 7fab552a-5ecd-41b0-a1a0-0f335a41359a
+HideHelpBoxStyle()="""
+#helpbox-wrapper{
+	display: none;
+}
+"""
+
+# ╔═╡ cd54eb94-dcd1-4bb7-ba57-8e1cedb0c659
+HideHelpBox()=convertCssStringIntoHtmlStyleDiv(HideHelpBoxStyle())
+
+# ╔═╡ 5a224531-c6d8-44b6-8eb3-a5a5625f0438
+export HideHelpBox
+
+# ╔═╡ c3189b86-3830-4bcf-993c-0ca06156782b
+
+
+# ╔═╡ 54b68516-8175-4051-bf2c-5585d923938c
+RedHeadingsStyle()="""
+pluto-output h1 {
+    font-family: "Comis Sans MS", cursive;
+    color: red;
+}
+"""
+
+# ╔═╡ befa9b8d-d331-42a3-a831-81a959717c2d
+RedHeadings()=convertCssStringIntoHtmlStyleDiv(RedHeadingsStyle())
 
 # ╔═╡ 48c69c30-7f27-401a-9c9a-c47d0f15d632
+function WideWidthAndHideHelpBox()
+	convertCssStringIntoHtmlStyleDiv(HideHelpBoxStyle()*RedHeadingsStyle())
+end
+
+# ╔═╡ 8c89084b-a71c-4c45-b7cc-4a9131dd961d
 
 
-# ╔═╡ 21e912cb-8e7f-4e5e-ae76-cdb548ffc968
+# ╔═╡ 37628d18-a5c1-4902-b94a-2bc16cdebdb0
 
+
+# ╔═╡ 942239d9-dbe0-46ee-b6ed-334321da3217
+md"""
+# Testing
+"""
 
 # ╔═╡ 6c2bdc56-830e-426a-a23d-7240a046d602
 
 
-# ╔═╡ 6f0ae0ca-725c-43bd-9f1b-f730eb684cb3
+# ╔═╡ 7eeb91fc-ed3e-453c-a934-d0b45796bd5c
+test(maxWidthInPercent,paddingLeftPercent,paddingRightPercent)="""
+body:not(.fake_class) main {
+max-width: $maxWidthInPercent% ;
+align-self: center 
+margin: 0 auto;
+padding-left: $(paddingLeftPercent)% ;
+padding-right: $paddingRightPercent% ;
+}
+"""
 
+# ╔═╡ b8b1c4d7-5015-4f9a-96a6-defc629d9687
+PlutoUI.to_css_string(test(10,10,20))
+
+# ╔═╡ 6f0ae0ca-725c-43bd-9f1b-f730eb684cb3
+WideWidthAndHideHelpBox();
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
 [deps]
 HypertextLiteral = "ac1192a8-f4b3-4bfe-ba22-af5b92cd3ab2"
+PlutoTeachingTools = "661c6b06-c737-4d37-b85c-46df65de6f69"
 PlutoUI = "7f904dfe-b85e-4ff6-b463-dae2292396a8"
 
 [compat]
 HypertextLiteral = "~0.9.4"
+PlutoTeachingTools = "~0.2.4"
 PlutoUI = "~0.7.44"
 """
 
@@ -111,7 +186,7 @@ PLUTO_MANIFEST_TOML_CONTENTS = """
 
 julia_version = "1.8.1"
 manifest_format = "2.0"
-project_hash = "ef2d44d9562fb349af7597f30b01a3bb0d2d6c18"
+project_hash = "d3a0126ab005e9fb67731a36a99b12bbac071747"
 
 [[deps.AbstractPlutoDingetjes]]
 deps = ["Pkg"]
@@ -129,6 +204,12 @@ uuid = "56f22d72-fd6d-98f1-02f0-08ddc0907c33"
 [[deps.Base64]]
 uuid = "2a0f44e3-6c83-55bd-87e4-b1978d98bd5f"
 
+[[deps.CodeTracking]]
+deps = ["InteractiveUtils", "UUIDs"]
+git-tree-sha1 = "cc4bd91eba9cdbbb4df4746124c22c0832a460d6"
+uuid = "da1fd8a2-8d9e-5ec2-8556-3022fb5608a2"
+version = "1.1.1"
+
 [[deps.ColorTypes]]
 deps = ["FixedPointNumbers", "Random"]
 git-tree-sha1 = "eb7f0f8307f71fac7c606984ea5fb2817275d6e4"
@@ -144,6 +225,10 @@ version = "0.5.2+0"
 deps = ["Printf"]
 uuid = "ade2ca70-3891-5945-98fb-dc099432e06a"
 
+[[deps.Distributed]]
+deps = ["Random", "Serialization", "Sockets"]
+uuid = "8ba89e20-285c-5b6f-9357-94700520ee1b"
+
 [[deps.Downloads]]
 deps = ["ArgTools", "FileWatching", "LibCURL", "NetworkOptions"]
 uuid = "f43a241f-c20a-4ad4-852c-f6b1247861c6"
@@ -157,6 +242,12 @@ deps = ["Statistics"]
 git-tree-sha1 = "335bfdceacc84c5cdf16aadc768aa5ddfc5383cc"
 uuid = "53c48c17-4a7d-5ca2-90c5-79b7896eea93"
 version = "0.8.4"
+
+[[deps.Formatting]]
+deps = ["Printf"]
+git-tree-sha1 = "8339d61043228fdd3eb658d86c926cb282ae72a8"
+uuid = "59287772-0a20-5a39-b81b-1366585eb4c0"
+version = "0.4.2"
 
 [[deps.Hyperscript]]
 deps = ["Test"]
@@ -185,6 +276,23 @@ deps = ["Dates", "Mmap", "Parsers", "Unicode"]
 git-tree-sha1 = "3c837543ddb02250ef42f4738347454f95079d4e"
 uuid = "682c06a0-de6a-54ab-a142-c8b1cf79cde6"
 version = "0.21.3"
+
+[[deps.JuliaInterpreter]]
+deps = ["CodeTracking", "InteractiveUtils", "Random", "UUIDs"]
+git-tree-sha1 = "0f960b1404abb0b244c1ece579a0ec78d056a5d1"
+uuid = "aa1ae85d-cabe-5617-a682-6adf51b2e16a"
+version = "0.9.15"
+
+[[deps.LaTeXStrings]]
+git-tree-sha1 = "f2355693d6778a178ade15952b7ac47a4ff97996"
+uuid = "b964fa9f-0449-5b57-a5c2-d3ea65f4040f"
+version = "1.3.0"
+
+[[deps.Latexify]]
+deps = ["Formatting", "InteractiveUtils", "LaTeXStrings", "MacroTools", "Markdown", "OrderedCollections", "Printf", "Requires"]
+git-tree-sha1 = "ab9aa169d2160129beb241cb2750ca499b4e90e9"
+uuid = "23fbe1c1-3f47-55db-b15f-69d7ec21a316"
+version = "0.15.17"
 
 [[deps.LibCURL]]
 deps = ["LibCURL_jll", "MozillaCACerts_jll"]
@@ -215,6 +323,18 @@ uuid = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 [[deps.Logging]]
 uuid = "56ddb016-857b-54e1-b83d-db4d58db5568"
 
+[[deps.LoweredCodeUtils]]
+deps = ["JuliaInterpreter"]
+git-tree-sha1 = "dedbebe234e06e1ddad435f5c6f4b85cd8ce55f7"
+uuid = "6f1432cf-f94c-5a45-995e-cdbf5db27b0b"
+version = "2.2.2"
+
+[[deps.MacroTools]]
+deps = ["Markdown", "Random"]
+git-tree-sha1 = "42324d08725e200c23d4dfb549e0d5d89dede2d2"
+uuid = "1914dd2f-81c6-5fcd-8719-6d5c9610ff09"
+version = "0.5.10"
+
 [[deps.Markdown]]
 deps = ["Base64"]
 uuid = "d6f4376e-aef5-505a-96c1-9c027394607a"
@@ -240,6 +360,11 @@ deps = ["Artifacts", "CompilerSupportLibraries_jll", "Libdl"]
 uuid = "4536629a-c528-5b80-bd46-f80d51c5b363"
 version = "0.3.20+0"
 
+[[deps.OrderedCollections]]
+git-tree-sha1 = "85f8e6578bf1f9ee0d11e7bb1b1456435479d47c"
+uuid = "bac558e1-5e72-5ebc-8fee-abe8a469f55d"
+version = "1.4.1"
+
 [[deps.Parsers]]
 deps = ["Dates"]
 git-tree-sha1 = "595c0b811cf2bab8b0849a70d9bd6379cc1cfb52"
@@ -250,6 +375,24 @@ version = "2.4.1"
 deps = ["Artifacts", "Dates", "Downloads", "LibGit2", "Libdl", "Logging", "Markdown", "Printf", "REPL", "Random", "SHA", "Serialization", "TOML", "Tar", "UUIDs", "p7zip_jll"]
 uuid = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
 version = "1.8.0"
+
+[[deps.PlutoHooks]]
+deps = ["InteractiveUtils", "Markdown", "UUIDs"]
+git-tree-sha1 = "072cdf20c9b0507fdd977d7d246d90030609674b"
+uuid = "0ff47ea0-7a50-410d-8455-4348d5de0774"
+version = "0.0.5"
+
+[[deps.PlutoLinks]]
+deps = ["FileWatching", "InteractiveUtils", "Markdown", "PlutoHooks", "Revise", "UUIDs"]
+git-tree-sha1 = "0e8bcc235ec8367a8e9648d48325ff00e4b0a545"
+uuid = "0ff47ea0-7a50-410d-8455-4348d5de0420"
+version = "0.1.5"
+
+[[deps.PlutoTeachingTools]]
+deps = ["Downloads", "HypertextLiteral", "LaTeXStrings", "Latexify", "Markdown", "PlutoLinks", "PlutoUI", "Random"]
+git-tree-sha1 = "2784ec6fd23a4e99081fd1f11fae40c5ec5f3777"
+uuid = "661c6b06-c737-4d37-b85c-46df65de6f69"
+version = "0.2.4"
 
 [[deps.PlutoUI]]
 deps = ["AbstractPlutoDingetjes", "Base64", "ColorTypes", "Dates", "Hyperscript", "HypertextLiteral", "IOCapture", "InteractiveUtils", "JSON", "Logging", "Markdown", "Random", "Reexport", "UUIDs"]
@@ -273,6 +416,18 @@ uuid = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
 git-tree-sha1 = "45e428421666073eab6f2da5c9d310d99bb12f9b"
 uuid = "189a3867-3050-52da-a836-e630ba90ab69"
 version = "1.2.2"
+
+[[deps.Requires]]
+deps = ["UUIDs"]
+git-tree-sha1 = "838a3a4188e2ded87a4f9f184b4b0d78a1e91cb7"
+uuid = "ae029012-a4dd-5104-9daa-d747884805df"
+version = "1.3.0"
+
+[[deps.Revise]]
+deps = ["CodeTracking", "Distributed", "FileWatching", "JuliaInterpreter", "LibGit2", "LoweredCodeUtils", "OrderedCollections", "Pkg", "REPL", "Requires", "UUIDs", "Unicode"]
+git-tree-sha1 = "dad726963ecea2d8a81e26286f625aee09a91b7c"
+uuid = "295af30f-e4ad-537b-8983-00126c2a3abe"
+version = "3.4.0"
 
 [[deps.SHA]]
 uuid = "ea8e919c-243c-51af-8825-aaa63cd721ce"
@@ -344,15 +499,29 @@ version = "17.4.0+0"
 # ╠═89469f3b-cb71-4143-a749-36ba8d39690b
 # ╠═2308c8f3-72eb-4987-9df1-1dca91a856e0
 # ╠═646aa9d2-4ea4-477c-8aea-079cc33ac95f
+# ╟─3a88f522-2f5f-4a02-9f6f-de2b1d2c30c4
+# ╠═6c1bd6a0-d61c-4e66-a60a-0ed8165e4043
 # ╟─c431beae-eab2-41c6-8b1f-be7d8bdff35a
 # ╠═b9e3f2c2-3c4e-41f5-aff4-80fa702c803a
 # ╠═84d4f62a-2671-406d-9456-f5e5a36fd07d
 # ╠═667c686b-7630-4451-8fa5-5415ab1559f6
 # ╠═58f06c62-6173-48e0-8926-87f7fec77d63
+# ╠═a8079d57-bfb8-4a79-97d5-210d44367e51
+# ╠═2554f3c6-91a2-431b-ba0b-7b6939fd4da3
+# ╟─087d4927-095d-44ab-b6c3-29fdb9c71051
+# ╠═7fab552a-5ecd-41b0-a1a0-0f335a41359a
+# ╠═5a224531-c6d8-44b6-8eb3-a5a5625f0438
 # ╠═cd54eb94-dcd1-4bb7-ba57-8e1cedb0c659
+# ╠═c3189b86-3830-4bcf-993c-0ca06156782b
+# ╠═54b68516-8175-4051-bf2c-5585d923938c
+# ╠═befa9b8d-d331-42a3-a831-81a959717c2d
 # ╠═48c69c30-7f27-401a-9c9a-c47d0f15d632
-# ╠═21e912cb-8e7f-4e5e-ae76-cdb548ffc968
+# ╠═8c89084b-a71c-4c45-b7cc-4a9131dd961d
+# ╠═37628d18-a5c1-4902-b94a-2bc16cdebdb0
+# ╠═942239d9-dbe0-46ee-b6ed-334321da3217
 # ╠═6c2bdc56-830e-426a-a23d-7240a046d602
+# ╠═7eeb91fc-ed3e-453c-a934-d0b45796bd5c
+# ╠═b8b1c4d7-5015-4f9a-96a6-defc629d9687
 # ╠═6f0ae0ca-725c-43bd-9f1b-f730eb684cb3
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
