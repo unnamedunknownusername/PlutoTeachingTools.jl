@@ -149,14 +149,11 @@ end
 correct(;lang::AbstractLanguage = default_language[], text=rand(yays(lang))) = Markdown.MD(Markdown.Admonition("correct", correct_str(lang), [text]));
 correct(text, lang::AbstractLanguage = default_language[]) = correct(;lang, text);
 
-TODO_str = html"<span style='display: inline; font-size: 2em; color: purple; font-weight: 900;'>TODO</span>"
-TODO() = TODO_str
-
 """
 Displays nice TODO graphic inline as an H1 heading (so will show up in PlutoUI's table of contents). 
 Useful for demarcating work-in-progress sections or parts that could be imporved or will be worked on later, etc.
 """
-function TODO(text)
+function TODO(text::AbsractString)
 @htl("""
 <div class="todo-tape">
 </div> 
@@ -187,6 +184,9 @@ background-color: white;
 </style>
 """)
 end
+
+TODO() = TODO("")
+
 
 # Useful strings for embedding in markdown
 nbsp = html"&nbsp;"
